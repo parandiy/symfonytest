@@ -1,0 +1,75 @@
+{% extends "::base.html.twig" %}
+
+{% block title %}View link{% endblock %}
+
+{% block body %}
+    <table class="table">
+        <tr>
+            <th>Original</th>
+            <th>Short</th>
+            <th>Due date</th>
+            <td></td>
+        </tr>
+        <tr>
+            <td>{{ link.link }}</td>
+            <td>{{ url('process', { 'link': link.shortLink }) }}</td>
+            <td>{{ link.dateTo.format('Y/m/d H:i:s') }}</td>
+            <td>
+                <button data-toggle="modal" data-target="#exampleModal" class="btn btn-primary">Edit</button>
+            </td>
+        </tr>
+    </table>
+    <h2 class="text-center">Statistic</h2>
+    <table class="table">
+        <tr>
+            <th>Date</th>
+            <th>IP</th>
+            <th>Geo</th>
+            <th>User Agent</th>
+        </tr>
+        {% for stat in link.statistics %}
+            <tr>
+                <td>{{ stat.createdAt.format('d/m/Y H:i:s') }}</td>
+                <td>{{ stat.ip }}</td>
+                <td>{{ stat.geo }}</td>
+                <td>{{ stat.userAgent }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Edit link</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form method="post" action="{{ path('edit_link', {'id': link.id}) }}" name="edit_link_form">
+                        <div class="form-group">
+                            <label for="exampleInputText">Link</label>
+                            <input type="text" name="link" value="{{ link.shortLink }}" class="form-control" id="exampleInputText" aria-describedby="textHelp" placeholder="Enter short link">
+                            <small id="textHelp" class="form-text text-muted">Enter new short link</small>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" onclick="edit_link_form.submit();">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+            $(function () {
+                    $('#edit-link-form').submit(function () {
+                            $.post('')
+                    });
+            });
+    </script>
+{% endblock %}

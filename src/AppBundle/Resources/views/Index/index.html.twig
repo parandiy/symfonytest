@@ -1,0 +1,54 @@
+{% extends "::base.html.twig" %}
+
+{% block title %}AppBundle:Index:index{% endblock %}
+
+    {% form_theme form 'bootstrap_4_layout.html.twig' %}
+
+{% block body %}
+
+    <h1>Add new link</h1>
+    {{ form_start(form) }}
+    {{ form_widget(form) }}
+    {{ form_end(form) }}
+
+    {% if links %}
+        <h2>Links list</h2>
+        <table class="table">
+            <tr>
+                <th>ID</th>
+                <th>Original</th>
+                <th>Short</th>
+                <th>Due date</th>
+                <th></th>
+            </tr>
+            {% for link in links %}
+                <tr>
+                    <td>{{ link.id }}</td>
+                    <td>{{ link.link }}</td>
+                    <td>{{ link.shortLink }}</td>
+                    <td>{{ link.dateTo.format('d/m/Y H:i:s') }}</td>
+                    <td><a class="btn btn-primary" href="{{ path('link_view', {'id': link.id}) }}">View</a></td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% endif %}
+{% endblock %}
+
+
+{% block javascripts %}
+    <script>
+            /*$(function () {
+                    $('#appbundle_links_link').on('change, input', function () {
+                            var link = $(this).val();
+
+                            $.post('/ajaxProcessLink', {
+                                    link      : link,
+                                    shortLink : ''
+                            }, function (data) {
+                                    console.log(data)
+                            });
+                            console.log(link);
+                    })
+            })*/
+    </script>
+{% endblock %}
